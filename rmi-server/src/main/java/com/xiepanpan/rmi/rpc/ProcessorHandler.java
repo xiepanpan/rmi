@@ -76,7 +76,7 @@ public class ProcessorHandler implements Runnable{
         String serviceName = request.getClassName();
         String version = request.getVersion();
 
-        if (version!=null&&version.equals("")) {
+        if (version!=null&&!version.equals("")) {
             serviceName=serviceName+"-"+version;
         }
         //从handlerMap中 根据客户端请求的地址 去拿到响应的服务 通过反射发起调用
