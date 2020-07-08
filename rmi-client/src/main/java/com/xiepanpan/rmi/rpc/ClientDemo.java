@@ -22,7 +22,7 @@ public class ClientDemo {
         RpcClientProxy rpcClientProxy = new RpcClientProxy(serviceDiscovery);
 
         for (int i = 0; i < 10; i++) {
-            IXpHello iXpHello = rpcClientProxy.clientProxy(IXpHello.class, "2.0");
+            IXpHello iXpHello = rpcClientProxy.clientProxy(IXpHello.class, null);
             System.out.println(iXpHello.sayHello("xpp"));
             Thread.sleep(1000);
         }
