@@ -24,9 +24,12 @@ public class ServiceDiscoveryImpl implements IServiceDiscovery {
 
     private CuratorFramework curatorFramework;
 
-    {
+    private String address;
+
+    public ServiceDiscoveryImpl(String address) {
+        this.address = address;
         curatorFramework = CuratorFrameworkFactory.builder()
-                .connectString(ZkConfig.CONNECTION_STR)
+                .connectString(address)
                 .sessionTimeoutMs(4000)
                 .retryPolicy(new ExponentialBackoffRetry(1000,10))
                 .build();
@@ -37,7 +40,7 @@ public class ServiceDiscoveryImpl implements IServiceDiscovery {
     public String discovery(String serviceName) {
         String path = ZkConfig.ZK_REGISTER_PATH + "/" + serviceName;
         try {
-            curatorFramework.getChildren().forPath(path);
+            response = curatorFramework.getChildren().forPath(path);
         } catch (Exception e) {
             throw new RuntimeException("获取子节点异常："+e);
         }
@@ -52,7 +55,7 @@ public class ServiceDiscoveryImpl implements IServiceDiscovery {
         return loadBalance.selectHost(response);
     }
 
-    private void registerWatcher(final String path) {
+    private void registerWatcher( final String path) {
         PathChildrenCache childrenCache = new PathChildrenCache(curatorFramework,path,true);
 
         PathChildrenCacheListener pathChildrenCacheListener = new PathChildrenCacheListener() {

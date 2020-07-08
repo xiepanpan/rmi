@@ -12,12 +12,10 @@ import java.net.Socket;
  */
 public class TcpTransport {
 
-    private String host;
-    private int port;
+    private String serviceAddress;
 
-    public TcpTransport(String host, int port) {
-        this.host = host;
-        this.port = port;
+    public TcpTransport(String serviceAddress) {
+        this.serviceAddress = serviceAddress;
     }
 
     /**
@@ -28,7 +26,8 @@ public class TcpTransport {
         System.out.println("创建一个新的连接");
         Socket socket ;
         try {
-            socket = new Socket(host,port);
+            String[] arrs = serviceAddress.split(":");
+            socket = new Socket(arrs[0],Integer.parseInt(arrs[1]));
             return socket;
         } catch (IOException e) {
             throw new RuntimeException("连接建立失败");
@@ -39,8 +38,8 @@ public class TcpTransport {
     public Object send(RpcRequest rpcRequest) {
         Socket socket = null;
 
-        socket = newSocket();
         try {
+            socket = newSocket();
             //获取输出流 将客户端需要调用的远程方法参数request发出去
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             outputStream.writeObject(rpcRequest);

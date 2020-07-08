@@ -12,7 +12,7 @@ public class ServerDemo {
 //        RpcServer rpcServer = new RpcServer();
 //        rpcServer.publish(iXpHello,8889);
         IRegisterCenter registerCenter = new RegisterCenterImpl();
-        RpcServer rpcServer = new RpcServer(registerCenter,"127.0.0.1:8080");
+        RpcServer rpcServer = new RpcServer(registerCenter,"127.0.0.1:8081");
         rpcServer.bind(iXpHello);
         rpcServer.publish();
         System.in.read();
